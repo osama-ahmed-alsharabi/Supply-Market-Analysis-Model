@@ -210,10 +210,6 @@ class SHAPAnalyzer:
         """
         print("\nإعداد محلل SHAP... - Initializing SHAP analyzer...")
         
-        # استخدام TreeExplainer لنماذج الأشجار - Use TreeExplainer for tree models
-        self.explainer = shap.TreeExplainer(model)
-        
-        # حساب قيم SHAP - Calculate SHAP values
         # نأخذ عينة إذا كانت البيانات كبيرة جداً - Sample if data is too large
         if len(X_data) > 1000:
             sample_size = 1000
@@ -221,11 +217,21 @@ class SHAPAnalyzer:
             self.X_sample = X_data.iloc[sample_indices]
         else:
             self.X_sample = X_data
+
+        # استخدام Explainer العام لتجنب مشاكل التوافق مع XGBoost 3.x
+        # Use generic Explainer to avoid compatibility issues with XGBoost 3.x
+        print("Using generic shap.Explainer with model.predict...")
+        # تحويل إلى numpy لتجنب مشاكل الأنواع - Convert to numpy to avoid type issues
+        X_sample_np = self.X_sample.values if hasattr(self.X_sample, 'values') else self.X_sample
+        self.explainer = shap.Explainer(model.predict, X_sample_np)
         
         print(f"حساب قيم SHAP لـ {len(self.X_sample)} عينة...")
         print(f"Calculating SHAP values for {len(self.X_sample)} samples...")
         
-        self.shap_values = self.explainer.shap_values(self.X_sample)
+        # Explainer الجديد يعيد كائن Explanation
+        # New Explainer returns Explanation object
+        shap_obj = self.explainer(self.X_sample)
+        self.shap_values = shap_obj.values
         self.feature_names = X_data.columns.tolist()
         
         print("✓ تم حساب قيم SHAP - SHAP values calculated")
@@ -246,7 +252,13 @@ class SHAPAnalyzer:
         """
         if X_instance is not None:
             # لحالة واحدة - For single instance
-            shap_val = self.explainer.shap_values(X_instance.reshape(1, -1))[0]
+            # نحتاج تمرير DataFrame للحفاظ على أسماء الأعمدة
+            if isinstance(X_instance, pd.Series):
+                X_df = X_instance.to_frame().T
+            else:
+                X_df = pd.DataFrame([X_instance], columns=self.feature_names)
+                
+            shap_val = self.explainer(X_df).values[0]
             abs_shap = np.abs(shap_val)
             driver_idx = np.argmax(abs_shap)
             return self.feature_names[driver_idx]
@@ -282,7 +294,8 @@ class SHAPAnalyzer:
         batch_size = 100
         for i in range(0, len(X_data), batch_size):
             batch = X_data.iloc[i:i+batch_size]
-            batch_shap = self.explainer.shap_values(batch)
+            # استخدام API الجديد
+            batch_shap = self.explainer(batch).values
             
             for shap_val in batch_shap:
                 abs_shap = np.abs(shap_val)

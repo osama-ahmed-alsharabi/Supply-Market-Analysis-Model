@@ -126,13 +126,13 @@ class DataPreprocessor:
                 elif col == 'Outlook_Production_Local':
                     # ترميز مخصص - Custom encoding
                     production_map = {'low': 1, 'medium': 2, 'high': 3}
-                    df[f'{col}_encoded'] = df[col].map(production_map)
+                    df[f'{col}_encoded'] = df[col].map(production_map).astype(float)
                     df.drop(col, axis=1, inplace=True)
                 
                 # Supply_Alert_Level (إذا كان موجوداً في البيانات)
                 elif col == 'Supply_Alert_Level':
                     alert_map = {'Low': 0, 'Med': 1, 'High': 2}
-                    df[f'{col}_encoded'] = df[col].map(alert_map)
+                    df[f'{col}_encoded'] = df[col].map(alert_map).astype(float)
                     # نبقي العمود الأصلي للمرجعية
         
         return df
