@@ -1,8 +1,6 @@
 """
-Models Module - وحدة النماذج
-==============================================
+وحدة النماذج
 بناء وتدريب النماذج مع SHAP للتفسير
-Build and train models with SHAP interpretation
 """
 
 import pandas as pd
@@ -21,29 +19,27 @@ from utils import calculate_metrics, print_metrics, classify_alert_level
 
 
 class BaselineModel:
-    """
-    نموذج الخط الأساسي - Baseline Linear Regression Model
-    """
+    """نموذج الخط الأساسي"""
     
     def __init__(self):
         self.model = LinearRegression()
         self.name = "Linear Regression Baseline"
         
     def train(self, X_train, y_train):
-        """تدريب النموذج - Train the model"""
+        """تدريب النموذج"""
         print(f"\n{'='*60}")
-        print(f"تدريب {self.name} - Training {self.name}")
+        print(f"Training {self.name}")
         print(f"{'='*60}")
         
         self.model.fit(X_train, y_train)
-        print("✓ تم التدريب بنجاح - Training completed")
+        print("[OK] Training completed")
         
     def predict(self, X):
-        """التنبؤ - Make predictions"""
+        """التنبؤ"""
         return self.model.predict(X)
     
     def evaluate(self, X_test, y_test):
-        """تقييم النموذج - Evaluate model"""
+        """تقييم النموذج"""
         y_pred = self.predict(X_test)
         metrics = calculate_metrics(y_test, y_pred)
         print_metrics(metrics, self.name)
@@ -51,9 +47,7 @@ class BaselineModel:
 
 
 class XGBoostModel:
-    """
-    نموذج XGBoost مع تحسين المعاملات - XGBoost Model with Hyperparameter Tuning
-    """
+    """نموذج XGBoost مع تحسين المعاملات"""
     
     def __init__(self, random_state=42):
         self.random_state = random_state
@@ -351,31 +345,69 @@ def predict_landed_cost(new_data_path, model_path='models/xgboost_model.joblib',
     # تحميل البيانات - Load data
     print(f"\n1. قراءة البيانات من: {new_data_path}")
     df = pd.read_csv(new_data_path)
-    print(f"   ✓ تم قراءة {len(df):,} صف")
+    print(f"   [OK] Read {len(df):,} rows")
     
     # تحميل النموذج - Load model
     print(f"\n2. تحميل النموذج من: {model_path}")
     model = joblib.load(model_path)
-    print("   ✓ تم التحميل")
+    print("   [OK] Model loaded")
+    
+    # هندسة الميزات - Feature engineering
+    print("\n3. تطبيق هندسة الميزات...")
+    from feature_engineering import engineer_all_features
+    df = engineer_all_features(df, target_col=None)
+    print(f"   [OK] Features engineered: {df.shape}")
     
     # معالجة البيانات - Preprocess data
     if preprocessor is not None:
-        print("\n3. معالجة البيانات...")
-        X, _, _ = preprocessor.prepare_for_modeling(df, scale=True, handle_missing=True)
-        print(f"   ✓ الميزات جاهزة: {X.shape}")
+        print("\n4. معالجة البيانات...")
+        X, _, _ = preprocessor.prepare_for_modeling(df, target_col=None, scale=True, handle_missing=True)
+        print(f"   [OK] Features ready: {X.shape}")
     else:
-        print("\n⚠ تحذير: لم يتم توفير معالج بيانات")
+        print("\n[WARNING] No preprocessor provided")
         X = df
     
+    # محاذاة الأعمدة مع ما يتوقعه النموذج - Align columns with model's expected features
+    print("\n5. محاذاة الأعمدة مع النموذج...")
+    
+    # الحصول على الأعمدة المتوقعة من النموذج - Get expected features from model
+    if hasattr(model, 'feature_names_in_'):
+        expected_features = list(model.feature_names_in_)
+    elif hasattr(model, 'get_booster'):
+        expected_features = model.get_booster().feature_names
+    else:
+        # fallback: try to use X columns
+        expected_features = X.columns.tolist()
+    
+    # إضافة الأعمدة المفقودة بقيمة 0 - Add missing columns with 0
+    current_features = X.columns.tolist()
+    missing_features = [f for f in expected_features if f not in current_features]
+    extra_features = [f for f in current_features if f not in expected_features]
+    
+    if missing_features:
+        print(f"   [!] Missing columns (filled with 0): {missing_features}")
+        for col in missing_features:
+            X[col] = 0
+    
+    if extra_features:
+        print(f"   [!] Extra columns (removed): {extra_features}")
+        X = X.drop(columns=extra_features)
+    
+    # إعادة ترتيب الأعمدة حسب ترتيب النموذج - Reorder columns to match model
+    X = X[expected_features]
+    print(f"   [OK] Aligned {len(expected_features)} features")
+    
     # التنبؤ - Predict
-    print("\n4. التنبؤ...")
+    print("\n6. التنبؤ...")
     predicted_costs = model.predict(X)
-    print(f"   ✓ تم التنبؤ بـ {len(predicted_costs):,} قيمة")
+    print(f"   [OK] Predicted {len(predicted_costs):,} values")
     
     # تصنيف الإنذارات - Classify alerts
-    print("\n5. تصنيف مستويات الإنذار...")
-    alert_levels = classify_alert_level(predicted_costs, df['ID_Commodity'])
-    print("   ✓ تم التصنيف")
+    print("\n7. تصنيف مستويات الإنذار...")
+    # نحتاج استخدام البيانات الأصلية للحصول على ID_Commodity
+    original_df = pd.read_csv(new_data_path)
+    alert_levels = classify_alert_level(predicted_costs, original_df['ID_Commodity'])
+    print("   [OK] Classified")
     
     # حساب العوامل الرئيسية (مبسط) - Calculate key drivers (simplified)
     # نستخدم أهمية الميزات من النموذج - Use feature importance from model
@@ -385,10 +417,10 @@ def predict_landed_cost(new_data_path, model_path='models/xgboost_model.joblib',
     drivers = [driver_cost_key] * len(predicted_costs)  # نفس العامل لجميع الصفوف (مبسط)
     
     # تجميع النتائج - Compile results
-    print("\n6. تجميع النتائج...")
+    print("\n8. تجميع النتائج...")
     results = pd.DataFrame({
-        'Date': df['Date'],
-        'ID_Commodity': df['ID_Commodity'],
+        'Date': original_df['Date'],
+        'ID_Commodity': original_df['ID_Commodity'],
         'Predicted_Landed_Cost': predicted_costs,
         'Supply_Alert_Level': alert_levels,
         'Driver_Cost_Key': drivers
@@ -396,7 +428,7 @@ def predict_landed_cost(new_data_path, model_path='models/xgboost_model.joblib',
     
     # الحفظ - Save
     results.to_csv(output_path, index=False, encoding='utf-8-sig')
-    print(f"\n✓ تم حفظ النتائج في: {output_path}")
+    print(f"\n[OK] Results saved to: {output_path}")
     
     return results
 
@@ -405,5 +437,5 @@ if __name__ == "__main__":
     print("=" * 60)
     print("اختبار وحدة النماذج - Testing Models Module")
     print("=" * 60)
-    print("\n⚠ يمكن تشغيل هذا الملف بعد إنشاء البيانات والمعالجة")
+    print("\n[!] This file can be run after data generation and preprocessing")
     print("  This file can be run after data generation and preprocessing")

@@ -230,7 +230,7 @@ def engineer_all_features(df, target_col='Predicted_Landed_Cost'):
     df = create_seasonal_features(df)
     
     final_cols = len(df.columns)
-    print(f"\n✓ تمت إضافة {final_cols - initial_cols} ميزة جديدة")
+    print(f"\n[OK] Added {final_cols - initial_cols} new features")
     print(f"  Added {final_cols - initial_cols} new features")
     print(f"  إجمالي الأعمدة - Total columns: {final_cols}")
     
@@ -246,11 +246,11 @@ if __name__ == "__main__":
     try:
         # قراءة البيانات - Load data
         df = pd.read_csv('data/synthetic_supply_market.csv')
-        print(f"\n✓ البيانات الأولية: {df.shape}")
+        print(f"\n[OK] Initial data: {df.shape}")
         
         # تطبيق هندسة الميزات - Apply feature engineering
         df_engineered = engineer_all_features(df)
-        print(f"\n✓ بعد الهندسة: {df_engineered.shape}")
+        print(f"\n[OK] After engineering: {df_engineered.shape}")
         
         # عرض بعض الأعمدة الجديدة - Show some new columns
         new_cols = [col for col in df_engineered.columns if col not in df.columns]
@@ -259,4 +259,4 @@ if __name__ == "__main__":
             print(f"  - {col}")
         
     except FileNotFoundError:
-        print("\n⚠ لم يتم العثور على البيانات. قم بتشغيل data_generator.py أولاً")
+        print("\n[!] Data not found. Run data_generator.py first")

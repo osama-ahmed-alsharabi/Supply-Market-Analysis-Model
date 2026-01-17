@@ -1,0 +1,11 @@
+Date,ID_Commodity,Anomaly_Price_Global,Index_Cost_Shipping,Premium_Insurance_Risk_War,Outlook_Production_Local,USD_Spread_Price_Market,Index_Stress_Chain_Supply,News_Sentiment_Score,Customs_Fees_Estimate
+2024-01-31,wheat,320,1.2,0.8,0.6,15,0.4,-0.2,30
+2024-02-29,sugar,410,1.3,0.9,0.7,18,0.5,-0.1,28
+2024-03-31,oil,780,1.5,1.1,0.5,25,0.7,-0.4,35
+2024-04-30,wheat,330,1.25,0.85,0.65,16,0.45,-0.15,31
+2024-05-31,sugar,420,1.35,0.95,0.75,19,0.55,-0.05,29
+2024-06-30,oil,800,1.55,1.15,0.55,27,0.75,-0.35,36
+2024-07-31,wheat,340,1.3,0.9,0.7,17,0.5,-0.1,32
+2024-08-31,sugar,430,1.4,1.0,0.8,20,0.6,0.0,30
+2024-09-30,oil,820,1.6,1.2,0.6,28,0.8,-0.3,37
+2024-10-31,wheat,350,1.45,1.05,0.75,21,0.65,0.05,33

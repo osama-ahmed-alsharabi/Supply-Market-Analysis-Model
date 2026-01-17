@@ -126,7 +126,21 @@ class DataPreprocessor:
                 elif col == 'Outlook_Production_Local':
                     # ترميز مخصص - Custom encoding
                     production_map = {'low': 1, 'medium': 2, 'high': 3}
-                    df[f'{col}_encoded'] = df[col].map(production_map).astype(float)
+                    
+                    # التحقق إذا كانت البيانات نصية أم رقمية
+                    if df[col].dtype == 'object' or isinstance(df[col].iloc[0], str):
+                         df[f'{col}_encoded'] = df[col].map(production_map).fillna(2).astype(float) # Default to medium
+                    else:
+                        # إذا كانت رقمية (مثل 0.3, 0.6, 0.9) نقوم بتحويلها
+                        # 0-0.4 -> 1 (Low), 0.4-0.75 -> 2 (Medium), >0.75 -> 3 (High)
+                        conditions = [
+                            (df[col] <= 0.4),
+                            (df[col] > 0.4) & (df[col] <= 0.75),
+                            (df[col] > 0.75)
+                        ]
+                        choices = [1.0, 2.0, 3.0]
+                        df[f'{col}_encoded'] = np.select(conditions, choices, default=2.0)
+                        
                     df.drop(col, axis=1, inplace=True)
                 
                 # Supply_Alert_Level (إذا كان موجوداً في البيانات)
@@ -173,8 +187,8 @@ class DataPreprocessor:
         -----------
         df : pd.DataFrame
             البيانات الأولية - Raw data
-        target_col : str
-            عمود الهدف - Target column
+        target_col : str or None
+            عمود الهدف - Target column (None for prediction on new data)
         scale : bool
             هل نطبّع البيانات - Whether to scale
         handle_missing : bool
@@ -184,8 +198,8 @@ class DataPreprocessor:
         --------
         X : pd.DataFrame
             الميزات - Features
-        y : pd.Series
-            الهدف - Target
+        y : pd.Series or None
+            الهدف - Target (None if target_col is None)
         df_processed : pd.DataFrame
             البيانات المعالجة كاملة - Full processed data
         """
@@ -202,19 +216,27 @@ class DataPreprocessor:
         # ترميز الفئات - Encode categorical
         df_processed = self.encode_categorical(df_processed)
         
-        # فصل الميزات والهدف - Separate features and target
-        # نحتفظ بعمود التاريخ والسلعة للمرجعية فقط
-        cols_to_exclude = ['Date', target_col, 'Supply_Alert_Level']
+        # منع تسرب البيانات - Prevent Data Leakage
+        # استبعاد المتغيرات التابعة (Target) ومشتقاتها
+        cols_to_exclude = ['Date', 'Supply_Alert_Level', 'Supply_Alert_Level_encoded']
+        if target_col is not None and target_col in df_processed.columns:
+            cols_to_exclude.append(target_col)
         
         feature_cols = [col for col in df_processed.columns if col not in cols_to_exclude]
         
         X = df_processed[feature_cols].copy()
-        y = df_processed[target_col].copy()
+        y = df_processed[target_col].copy() if (target_col is not None and target_col in df_processed.columns) else None
         
         # تطبيع الميزات - Scale features
         if scale:
+            # فقط الأعمدة الرقمية التي ليست مشفرة (encoded) لتجنب تشويه الفئات
             numeric_cols = X.select_dtypes(include=[np.number]).columns.tolist()
-            X = self.scale_features(X, numeric_cols, fit=True)
+            # استثناء الأعمدة المشفرة يدوياً
+            cols_to_skip_scale = [c for c in numeric_cols if c.endswith('_encoded')]
+            cols_to_scale_final = [c for c in numeric_cols if c not in cols_to_skip_scale]
+            
+            if cols_to_scale_final:
+                X = self.scale_features(X, cols_to_scale_final, fit=True)
         
         self.feature_names = X.columns.tolist()
         

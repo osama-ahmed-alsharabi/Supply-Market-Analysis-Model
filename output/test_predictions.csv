@@ -1,0 +1,11 @@
+﻿Date,ID_Commodity,Predicted_Landed_Cost,Supply_Alert_Level,Driver_Cost_Key
+2024-01-31,wheat,476.61002,Low,ID_Commodity_oil
+2024-02-29,sugar,718.8746,Low,ID_Commodity_oil
+2024-03-31,oil,1625.3539,Low,ID_Commodity_oil
+2024-04-30,wheat,546.9886,Low,ID_Commodity_oil
+2024-05-31,sugar,751.10187,Low,ID_Commodity_oil
+2024-06-30,oil,1683.3389,Low,ID_Commodity_oil
+2024-07-31,wheat,582.8488,Low,ID_Commodity_oil
+2024-08-31,sugar,783.8569,Low,ID_Commodity_oil
+2024-09-30,oil,1710.2958,Low,ID_Commodity_oil
+2024-10-31,wheat,714.7893,High,ID_Commodity_oil
