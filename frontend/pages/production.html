@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>توقعات الإنتاج المحلي - تحليل السوق والتوريد</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-chart-line"></i>
+                    <span>تحليل السوق والتوريد</span>
+                </div>
+                <ul class="navbar-nav">
+                    <li><a href="../index.html" class="nav-link">لوحة التحكم</a></li>
+                    <li><a href="forecast.html" class="nav-link">التنبؤ بالتكاليف</a></li>
+                    <li><a href="alerts.html" class="nav-link">التنبيهات</a></li>
+                    <li><a href="production.html" class="nav-link active">الإنتاج المحلي</a></li>
+                    <li><a href="competitive.html" class="nav-link">تحليل المنافسة</a></li>
+                    <li><a href="strategy.html" class="nav-link">الملخص الاستراتيجي</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <h1 class="fade-in">🌱 توقعات الإنتاج المحلي</h1>
+            <p class="hero-subtitle">
+                تصنيف صحة الإنتاج الزراعي المحلي بناءً على المؤشرات البيئية
+            </p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="card">
+            <h2 style="margin-bottom: 1.5rem;">تحليل الإنتاج الإقليمي</h2>
+
+            <!-- Region Selector -->
+            <div class="grid grid-3" style="margin-bottom: 2rem;">
+                <div class="card-glass" style="padding: 1.5rem; cursor: pointer; text-align: center;"
+                    onclick="selectRegion('YEM_SOUTH')">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏜️</div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">جنوب اليمن</h3>
+                    <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">المنطقة الجنوبية</p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge badge-warning">توقعات متوسطة</span>
+                    </div>
+                </div>
+
+                <div class="card-glass" style="padding: 1.5rem; cursor: pointer; text-align: center;"
+                    onclick="selectRegion('YEM_NORTH')">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">⛰️</div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">شمال اليمن</h3>
+                    <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">المنطقة الشمالية</p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge badge-success">توقعات جيدة</span>
+                    </div>
+                </div>
+
+                <div class="card-glass" style="padding: 1.5rem; cursor: pointer; text-align: center;"
+                    onclick="selectRegion('YEM_CENTRAL')">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌾</div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">وسط اليمن</h3>
+                    <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">المنطقة الوسطى</p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge badge-danger">توقعات ضعيفة</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المؤشرات البيئية -->
+            <h3 style="margin-bottom: 1rem;">المؤشرات البيئية - جنوب اليمن</h3>
+            <div class="grid grid-3" style="margin-bottom: 2rem;">
+                <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div
+                            style="width: 48px; height: 48px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-green);">
+                            <i class="fas fa-leaf" style="font-size: 1.25rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-green);">0.55</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">مؤشر NDVI</div>
+                        </div>
+                    </div>
+                    <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                        <div style="width: 55%; height: 100%; background: var(--gradient-success);"></div>
+                    </div>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">صحة نباتية
+                        متوسطة</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div
+                            style="width: 48px; height: 48px; border-radius: 50%; background: rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-red);">
+                            <i class="fas fa-cloud-rain" style="font-size: 1.25rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-red);">-30 mm</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">شذوذ في الأمطار</div>
+                        </div>
+                    </div>
+                    <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                        <div style="width: 30%; height: 100%; background: var(--gradient-danger);"></div>
+                    </div>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">أمطار أقل
+                        من الطبيعي</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div
+                            style="width: 48px; height: 48px; border-radius: 50%; background: rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-amber);">
+                            <i class="fas fa-temperature-high" style="font-size: 1.25rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-amber);">+2.5°C</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">شذوذ في درجة الحرارة</div>
+                        </div>
+                    </div>
+                    <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                        <div style="width: 65%; height: 100%; background: var(--gradient-warning);"></div>
+                    </div>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">حرارة أعلى
+                        من الطبيعي</p>
+                </div>
+            </div>
+
+            <!-- توقعات الإنتاج Results -->
+            <div class="alert alert-warning" style="margin-bottom: 1.5rem;">
+                <strong>توقعات الإنتاج:</strong> متوسطة |
+                <strong>درجة الموثوقية:</strong> 78% |
+                <strong>التغير المتوقع في الإنتاج:</strong> +2.4%
+            </div>
+
+            <!-- عوامل التأثير -->
+            <h3 style="margin-bottom: 1rem;">عوامل التأثير</h3>
+            <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+                    <div>
+                        <strong>مؤشر NDVI</strong>
+                        <div style="color: var(--text-muted); font-size: 0.875rem;">الوزن: 45%</div>
+                    </div>
+                    <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: var(--primary-500);">
+                        تأثير محايد
+                    </span>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+                    <div>
+                        <strong>شذوذ في الأمطار</strong>
+                        <div style="color: var(--text-muted); font-size: 0.875rem;">الوزن: 35%</div>
+                    </div>
+                    <span class="badge badge-success">
+                        تأثير إيجابي
+                    </span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>العامل الموسمي</strong>
+                        <div style="color: var(--text-muted); font-size: 0.875rem;">الوزن: 20%</div>
+                    </div>
+                    <span class="badge badge-success">
+                        تأثير إيجابي
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 تحليل السوق والتوريد. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/api.js"></script>
+    <script>
+        function selectRegion(regionId) {
+            showAlert(`جاري تحليل ${regionId}...`, 'success');
+            // في الإنتاج، سيتم استدعاء API
+        }
+    </script>
+</body>
+
+</html>

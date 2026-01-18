@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التنبيهات المبكرة - تحليل السوق والتوريد</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-chart-line"></i>
+                    <span>تحليل السوق والتوريد</span>
+                </div>
+                <ul class="navbar-nav">
+                    <li><a href="../index.html" class="nav-link">لوحة التحكم</a></li>
+                    <li><a href="forecast.html" class="nav-link">التنبؤ بالتكاليف</a></li>
+                    <li><a href="alerts.html" class="nav-link active">التنبيهات</a></li>
+                    <li><a href="production.html" class="nav-link">الإنتاج المحلي</a></li>
+                    <li><a href="competitive.html" class="nav-link">تحليل المنافسة</a></li>
+                    <li><a href="strategy.html" class="nav-link">الملخص الاستراتيجي</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <h1 class="fade-in">🚨 نظام الإنذار المبكر</h1>
+            <p class="hero-subtitle">
+                اكتشاف ارتفاعات غير طبيعية في التكاليف المستقبلية بناءً على التحليلات التنبؤية
+            </p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="grid grid-3" style="margin-bottom: 2rem;">
+            <div class="stat-card" style="border-right: 3px solid var(--accent-red);">
+                <div class="stat-icon" style="background: var(--gradient-danger);">
+                    <i class="fas fa-triangle-exclamation"></i>
+                </div>
+                <div class="stat-value" style="color: var(--accent-red);">3</div>
+                <div class="stat-label">تنبيهات عالية</div>
+            </div>
+            <div class="stat-card" style="border-right: 3px solid var(--accent-amber);">
+                <div class="stat-icon" style="background: var(--gradient-warning);">
+                    <i class="fas fa-circle-exclamation"></i>
+                </div>
+                <div class="stat-value" style="color: var(--accent-amber);">5</div>
+                <div class="stat-label">تنبيهات متوسطة</div>
+            </div>
+            <div class="stat-card" style="border-right: 3px solid var(--accent-green);">
+                <div class="stat-icon" style="background: var(--gradient-success);">
+                    <i class="fas fa-circle-check"></i>
+                </div>
+                <div class="stat-value" style="color: var(--accent-green);">12</div>
+                <div class="stat-label">سلع قليلة المخاطر</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="flex-between" style="margin-bottom: 1.5rem;">
+                <h2>التنبيهات النشطة</h2>
+                <div class="flex" style="gap: 0.5rem;">
+                    <button class="btn btn-secondary" onclick="filterAlerts('all')">الكل</button>
+                    <button class="btn btn-danger" onclick="filterAlerts('high')">عالي</button>
+                    <button class="btn btn-warning" onclick="filterAlerts('medium')">متوسط</button>
+                    <button class="btn btn-success" onclick="filterAlerts('low')">منخفض</button>
+                </div>
+            </div>
+
+            <div id="alertsList">
+                <div class="alert-item high slide-up">
+                    <div class="alert-icon">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="alert-content">
+                        <div class="alert-title">الزيت: ارتفاع حاد متوقع في الأسعار</div>
+                        <div class="alert-message">
+                            <strong>الزيادة المتوقعة:</strong> 23.6% |
+                            <strong>تاريخ الذروة:</strong> 2026-04-01 |
+                            <strong>أيام حتى الذروة:</strong> 74
+                        </div>
+                        <div class="alert-message" style="margin-top: 0.5rem;">
+                            تم اكتشاف انحراف حاد في التكلفة - تتقارب عوامل مخاطر متعددة. يُنصح بالشراء الفوري.
+                        </div>
+                        <div class="alert-time">
+                            <i class="fas fa-clock"></i>
+                            منذ ساعتين
+                        </div>
+                    </div>
+                    <span class="badge badge-danger">عالي</span>
+                </div>
+
+                <div class="alert-item high slide-up" style="animation-delay: 0.1s;">
+                    <div class="alert-icon">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="alert-content">
+                        <div class="alert-title">القمح: مؤشر الشحن حرج</div>
+                        <div class="alert-message">
+                            <strong>الزيادة المتوقعة:</strong> 18.2% |
+                            <strong>المحرك الرئيسي:</strong> مؤشر تكلفة الشحن
+                        </div>
+                        <div class="alert-message" style="margin-top: 0.5rem;">
+                            ارتفاع تكاليف الشحن بسبب التحديات اللوجستية العالمية. المراقبة عن كثب مطلوبة.
+                        </div>
+                        <div class="alert-time">
+                            <i class="fas fa-clock"></i>
+                            منذ 5 ساعات
+                        </div>
+                    </div>
+                    <span class="badge badge-danger">عالي</span>
+                </div>
+
+                <div class="alert-item medium slide-up" style="animation-delay: 0.2s;">
+                    <div class="alert-icon">
+                        <i class="fas fa-circle-exclamation"></i>
+                    </div>
+                    <div class="alert-content">
+                        <div class="alert-title">السكر: ضغط متوسط على سلسلة التوريد</div>
+                        <div class="alert-message">
+                            <strong>الزيادة المتوقعة:</strong> 12.5% |
+                            <strong>مستوى التنبيه:</strong> متوسط
+                        </div>
+                        <div class="alert-message" style="margin-top: 0.5rem;">
+                            مؤشر ضغط سلسلة التوريد مرتفع. يُنصح بتنويع الموردين.
+                        </div>
+                        <div class="alert-time">
+                            <i class="fas fa-clock"></i>
+                            منذ يوم واحد
+                        </div>
+                    </div>
+                    <span class="badge badge-warning">متوسط</span>
+                </div>
+
+                <div class="alert-item low slide-up" style="animation-delay: 0.3s;">
+                    <div class="alert-icon">
+                        <i class="fas fa-circle-info"></i>
+                    </div>
+                    <div class="alert-content">
+                        <div class="alert-title">القمح: ظروف سوق عادية</div>
+                        <div class="alert-message">
+                            السوق يُظهر اتجاهات مستقرة مع تقلبات منخفضة. لا حاجة لإجراء فوري.
+                        </div>
+                        <div class="alert-time">
+                            <i class="fas fa-clock"></i>
+                            منذ يومين
+                        </div>
+                    </div>
+                    <span class="badge badge-success">منخفض</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 تحليل السوق والتوريد. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/api.js"></script>
+    <script>
+        function filterAlerts(level) {
+            const alerts = document.querySelectorAll('.alert-item');
+            alerts.forEach(alert => {
+                if (level === 'all' || alert.classList.contains(level)) {
+                    alert.style.display = 'flex';
+                } else {
+                    alert.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

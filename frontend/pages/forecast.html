@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التنبؤ بالتكاليف - تحليل السوق والتوريد</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-chart-line"></i>
+                    <span>تحليل السوق والتوريد</span>
+                </div>
+                <ul class="navbar-nav">
+                    <li><a href="../index.html" class="nav-link">لوحة التحكم</a></li>
+                    <li><a href="forecast.html" class="nav-link active">التنبؤ بالتكاليف</a></li>
+                    <li><a href="alerts.html" class="nav-link">التنبيهات</a></li>
+                    <li><a href="production.html" class="nav-link">الإنتاج المحلي</a></li>
+                    <li><a href="competitive.html" class="nav-link">تحليل المنافسة</a></li>
+                    <li><a href="strategy.html" class="nav-link">الملخص الاستراتيجي</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <h1 class="fade-in">📊 التنبؤ بالتكاليف</h1>
+            <p class="hero-subtitle">
+                توقع التكاليف المستقبلية لكل سلعة ضمن نطاق زمني محدد
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="container">
+        <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem;">
+            <!-- Input Form -->
+            <div class="card slide-up">
+                <h3 style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-sliders"></i>
+                    معاملات التنبؤ
+                </h3>
+
+                <form id="forecastForm">
+                    <!-- Commodity Selection -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-box"></i>
+                            السلعة
+                        </label>
+                        <select class="form-select" id="commodityId" required>
+                            <option value="">اختر السلعة...</option>
+                            <option value="wheat">🌾 القمح</option>
+                            <option value="sugar">🍚 السكر</option>
+                            <option value="oil">🛢️ الزيت</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Range -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar"></i>
+                            تاريخ البداية
+                        </label>
+                        <input type="date" class="form-input" id="startDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar"></i>
+                            تاريخ النهاية
+                        </label>
+                        <input type="date" class="form-input" id="endDate" required>
+                    </div>
+
+                    <!-- Market Indicators -->
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1rem; color: var(--text-secondary);">
+                        مؤشرات السوق
+                    </h4>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            انحراف السعر العالمي (دولار/طن)
+                        </label>
+                        <input type="number" class="form-input" id="globalPriceAnomaly" value="25.0" step="0.1"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            مؤشر الشحن (0-200)
+                        </label>
+                        <input type="number" class="form-input" id="shippingIndex" value="120.0" min="0" max="200"
+                            step="0.1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            مؤشر مخاطر التأمين (0.0-1.0)
+                        </label>
+                        <input type="number" class="form-input" id="insuranceRiskIndex" value="0.35" min="0" max="1"
+                            step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            ضغط سلسلة التوريد (0-100)
+                        </label>
+                        <input type="number" class="form-input" id="supplyChainStress" value="65.0" min="0" max="100"
+                            step="0.1" required>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex" style="gap: 0.5rem; margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            <i class="fas fa-chart-line"></i>
+                            إنشاء تنبؤ
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Display -->
+            <div>
+                <!-- Results Summary -->
+                <div class="card slide-up" id="resultsCard" style="display: none; animation-delay: 0.1s;">
+                    <h3 style="margin-bottom: 1.5rem;">
+                        <i class="fas fa-chart-bar"></i>
+                        نتائج التنبؤ
+                    </h3>
+
+                    <!-- Summary Stats -->
+                    <div class="grid grid-3" style="margin-bottom: 1.5rem;">
+                        <div
+                            style="text-align: center; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-500);" id="avgCost">--
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">متوسط
+                                التكلفة</div>
+                        </div>
+                        <div
+                            style="text-align: center; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-green);" id="minCost">
+                                --</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">أدنى تكلفة
+                            </div>
+                        </div>
+                        <div
+                            style="text-align: center; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-red);" id="maxCost">--
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">أقصى تكلفة
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trend Badge -->
+                    <div class="flex-center" style="margin-bottom: 1.5rem;">
+                        <span class="badge" id="trendBadge">
+                            <i class="fas fa-arrow-trend-up"></i>
+                            <span id="trendText">--</span>
+                        </span>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Predictions Table -->
+                <div class="card slide-up" id="predictionsCard"
+                    style="display: none; margin-top: 1.5rem; animation-delay: 0.2s;">
+                    <h3 style="margin-bottom: 1.5rem;">
+                        <i class="fas fa-table"></i>
+                        التوقعات التفصيلية
+                    </h3>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <th
+                                        style="padding: 0.75rem; text-align: right; color: var(--text-secondary); font-weight: 600;">
+                                        التاريخ</th>
+                                    <th
+                                        style="padding: 0.75rem; text-align: right; color: var(--text-secondary); font-weight: 600;">
+                                        التكلفة المتوقعة</th>
+                                    <th
+                                        style="padding: 0.75rem; text-align: right; color: var(--text-secondary); font-weight: 600;">
+                                        مستوى الثقة</th>
+                                    <th
+                                        style="padding: 0.75rem; text-align: right; color: var(--text-secondary); font-weight: 600;">
+                                        المحرك الرئيسي</th>
+                                </tr>
+                            </thead>
+                            <tbody id="predictionsTable">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="flex-center" style="margin-top: 1.5rem;">
+                        <button class="btn btn-secondary" onclick="exportResults()">
+                            <i class="fas fa-download"></i>
+                            تصدير النتائج
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 تحليل السوق والتوريد. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/js/api.js"></script>
+    <script>
+        let forecastChart = null;
+
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const sixMonthsLater = new Date(today);
+            sixMonthsLater.setMonth(today.getMonth() + 6);
+
+            document.getElementById('startDate').value = today.toISOString().split('T')[0];
+            document.getElementById('endDate').value = sixMonthsLater.toISOString().split('T')[0];
+        });
+
+        // Handle form submission
+        document.getElementById('forecastForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await generateForecast();
+        });
+
+        async function generateForecast() {
+            try {
+                showLoading('جاري إنشاء التنبؤ...');
+
+                const requestData = {
+                    commodity_id: document.getElementById('commodityId').value,
+                    date_range: {
+                        start_date: document.getElementById('startDate').value,
+                        end_date: document.getElementById('endDate').value
+                    },
+                    market_indicators: {
+                        global_price_anomaly: parseFloat(document.getElementById('globalPriceAnomaly').value),
+                        shipping_index: parseFloat(document.getElementById('shippingIndex').value),
+                        insurance_risk_index: parseFloat(document.getElementById('insuranceRiskIndex').value),
+                        supply_chain_stress_index: parseFloat(document.getElementById('supplyChainStress').value)
+                    }
+                };
+
+                const response = await apiClient.getCostForecast(requestData);
+
+                hideLoading();
+                displayResults(response.data);
+                showAlert('تم إنشاء التنبؤ بنجاح!', 'success');
+
+            } catch (error) {
+                hideLoading();
+                console.error('Forecast error:', error);
+                showAlert('فشل إنشاء التنبؤ. ' + error.message, 'danger');
+            }
+        }
+
+        function displayResults(data) {
+            // Show results cards
+            document.getElementById('resultsCard').style.display = 'block';
+            document.getElementById('predictionsCard').style.display = 'block';
+
+            // Update summary
+            document.getElementById('avgCost').textContent = formatCurrency(data.summary.avg_cost);
+            document.getElementById('minCost').textContent = formatCurrency(data.summary.min_cost);
+            document.getElementById('maxCost').textContent = formatCurrency(data.summary.max_cost);
+
+            // Update trend
+            const trendBadge = document.getElementById('trendBadge');
+            trendBadge.className = 'badge ' + getTrendBadgeClass(data.summary.trend_direction);
+            document.getElementById('trendText').textContent = data.summary.trend_direction.toUpperCase();
+
+            // Render chart
+            renderForecastChart(data.predictions);
+
+            // Render table
+            renderPredictionsTable(data.predictions);
+        }
+
+        function renderForecastChart(predictions) {
+            const ctx = document.getElementById('forecastChart');
+
+            if (forecastChart) {
+                forecastChart.destroy();
+            }
+
+            forecastChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: predictions.map(p => formatDate(p.date)),
+                    datasets: [{
+                        label: 'التكلفة المتوقعة (دولار)',
+                        data: predictions.map(p => p.predicted_landed_cost_usd),
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            titleColor: '#f8fafc',
+                            bodyColor: '#cbd5e1',
+                            borderColor: 'rgba(99, 102, 241, 0.3)',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                            ticks: {
+                                color: '#94a3b8',
+                                callback: value => '$' + value.toFixed(2)
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderPredictionsTable(predictions) {
+            const tbody = document.getElementById('predictionsTable');
+            tbody.innerHTML = predictions.map(pred => `
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                    <td style="padding: 0.75rem; color: var(--text-primary);">${formatDate(pred.date)}</td>
+                    <td style="padding: 0.75rem; color: var(--primary-500); font-weight: 600;">${formatCurrency(pred.predicted_landed_cost_usd)}</td>
+                    <td style="padding: 0.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="flex: 1; height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                                <div style="width: ${pred.confidence_score * 100}%; height: 100%; background: var(--gradient-success);"></div>
+                            </div>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">${(pred.confidence_score * 100).toFixed(0)}%</span>
+                        </div>
+                    </td>
+                    <td style="padding: 0.75rem; color: var(--text-secondary); font-size: 0.875rem;">${pred.main_cost_driver}</td>
+                </tr>
+            `).join('');
+        }
+
+        function resetForm() {
+            document.getElementById('forecastForm').reset();
+            const today = new Date();
+            const sixMonthsLater = new Date(today);
+            sixMonthsLater.setMonth(today.getMonth() + 6);
+            document.getElementById('startDate').value = today.toISOString().split('T')[0];
+            document.getElementById('endDate').value = sixMonthsLater.toISOString().split('T')[0];
+        }
+
+        function exportResults() {
+            showAlert('وظيفة التصدير قادمة قريباً!', 'warning');
+        }
+    </script>
+</body>
+
+</html>

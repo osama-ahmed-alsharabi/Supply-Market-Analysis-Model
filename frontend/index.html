@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليل السوق والتوريد - لوحة التحكم</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body>
+    <!-- النافبار -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-chart-line"></i>
+                    <span>تحليل السوق والتوريد</span>
+                </div>
+                <ul class="navbar-nav">
+                    <li><a href="index.html" class="nav-link active">لوحة التحكم</a></li>
+                    <li><a href="pages/forecast.html" class="nav-link">التنبؤ بالتكاليف</a></li>
+                    <li><a href="pages/alerts.html" class="nav-link">التنبيهات</a></li>
+                    <li><a href="pages/production.html" class="nav-link">الإنتاج المحلي</a></li>
+                    <li><a href="pages/competitive.html" class="nav-link">تحليل المنافسة</a></li>
+                    <li><a href="pages/strategy.html" class="nav-link">الملخص الاستراتيجي</a></li>
+                </ul>
+                <div class="navbar-actions">
+                    <button class="btn btn-primary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync"></i>
+                        تحديث
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- القسم الرئيسي -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="fade-in">نظام تحليل السوق والتوريد الذكي</h1>
+            <p class="hero-subtitle">
+                رؤى فورية وتحليلات تنبؤية لاتخاذ قرارات تجارة السلع
+            </p>
+            <div class="flex-center" style="gap: 1rem;">
+                <span class="badge badge-success">
+                    <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                    متصل بالنظام
+                </span>
+                <span class="badge badge-primary" id="lastUpdate">
+                    <i class="fas fa-clock"></i>
+                    آخر تحديث: --:--
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- نظرة عامة على الإحصائيات -->
+    <section class="container">
+        <div class="stats-grid">
+            <div class="stat-card slide-up">
+                <div class="stat-icon">
+                    <i class="fas fa-wheat-awn"></i>
+                </div>
+                <div class="stat-value" id="wheatPrice">--</div>
+                <div class="stat-label">متوسط تكلفة القمح</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>2.4% مقارنة بالشهر الماضي</span>
+                </div>
+            </div>
+
+            <div class="stat-card slide-up" style="animation-delay: 0.1s;">
+                <div class="stat-icon" style="background: var(--gradient-success);">
+                    <i class="fas fa-sugar"></i>
+                </div>
+                <div class="stat-value" id="sugarPrice">--</div>
+                <div class="stat-label">متوسط تكلفة السكر</div>
+                <div class="stat-change negative">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>1.2% مقارنة بالشهر الماضي</span>
+                </div>
+            </div>
+
+            <div class="stat-card slide-up" style="animation-delay: 0.2s;">
+                <div class="stat-icon" style="background: var(--gradient-warning);">
+                    <i class="fas fa-oil-can"></i>
+                </div>
+                <div class="stat-value" id="oilPrice">--</div>
+                <div class="stat-label">متوسط تكلفة الزيت</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>3.8% مقارنة بالشهر الماضي</span>
+                </div>
+            </div>
+
+            <div class="stat-card slide-up" style="animation-delay: 0.3s;">
+                <div class="stat-icon" style="background: var(--gradient-danger);">
+                    <i class="fas fa-triangle-exclamation"></i>
+                </div>
+                <div class="stat-value" id="activeAlerts">0</div>
+                <div class="stat-label">التنبيهات النشطة</div>
+                <div class="stat-change">
+                    <i class="fas fa-info-circle"></i>
+                    <span>أولوية متوسطة</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- نظرة عامة على السلع -->
+    <section class="container">
+        <h2>نظرة عامة على السلع</h2>
+        <div class="commodity-grid" id="commodityGrid">
+            <!-- يتم ملؤها ديناميكياً -->
+        </div>
+    </section>
+
+    <!-- قسم الرسوم البيانية -->
+    <section class="container">
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+            <!-- رسم اتجاهات الأسعار -->
+            <div class="chart-card slide-up">
+                <div class="chart-header">
+                    <h3 class="chart-title">اتجاهات الأسعار</h3>
+                    <div class="flex" style="gap: 0.5rem;">
+                        <span class="badge badge-primary">30 يوم</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="priceTrendsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- رسم توزيع المخاطر -->
+            <div class="chart-card slide-up" style="animation-delay: 0.1s;">
+                <div class="chart-header">
+                    <h3 class="chart-title">توزيع المخاطر</h3>
+                    <div class="flex" style="gap: 0.5rem;">
+                        <span class="badge badge-warning">الحالي</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="riskDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم التنبيهات -->
+    <section class="container alerts-section">
+        <div class="flex-between mb-2">
+            <h2>أحدث التنبيهات</h2>
+            <a href="pages/alerts.html" class="btn btn-secondary">
+                عرض الكل
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        <div id="alertsContainer">
+            <!-- يتم ملؤها ديناميكياً -->
+        </div>
+    </section>
+
+    <!-- الإجراءات السريعة -->
+    <section class="container quick-actions">
+        <h2 class="text-center">الإجراءات السريعة</h2>
+        <div class="action-grid">
+            <a href="pages/forecast.html" class="action-card">
+                <div class="action-icon">📊</div>
+                <div class="action-title">التنبؤ بالتكاليف</div>
+                <div class="action-description">توقع التكاليف المستقبلية</div>
+            </a>
+            <a href="pages/alerts.html" class="action-card">
+                <div class="action-icon">🚨</div>
+                <div class="action-title">الإنذار المبكر</div>
+                <div class="action-description">مراقبة تنبيهات المخاطر</div>
+            </a>
+            <a href="pages/production.html" class="action-card">
+                <div class="action-icon">🌱</div>
+                <div class="action-title">توقعات الإنتاج</div>
+                <div class="action-description">صحة الإنتاج المحلي</div>
+            </a>
+            <a href="pages/competitive.html" class="action-card">
+                <div class="action-icon">📈</div>
+                <div class="action-title">صحة السوق</div>
+                <div class="action-description">التحليل التنافسي</div>
+            </a>
+            <a href="pages/strategy.html" class="action-card">
+                <div class="action-icon">🎯</div>
+                <div class="action-title">الملخص الاستراتيجي</div>
+                <div class="action-description">رؤى جاهزة للقرار</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 تحليل السوق والتوريد. جميع الحقوق محفوظة.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+                    مدعوم بنموذج XGBoost ML v2.1 | خادم FastAPI
+                </p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#" class="footer-link">التوثيق</a></li>
+                <li><a href="#" class="footer-link">مرجع API</a></li>
+                <li><a href="#" class="footer-link">الدعم الفني</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+
+</html>

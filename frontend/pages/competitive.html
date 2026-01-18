@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صحة السوق التنافسية - تحليل السوق والتوريد</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-chart-line"></i>
+                    <span>تحليل السوق والتوريد</span>
+                </div>
+                <ul class="navbar-nav">
+                    <li><a href="../index.html" class="nav-link">لوحة التحكم</a></li>
+                    <li><a href="forecast.html" class="nav-link">التنبؤ بالتكاليف</a></li>
+                    <li><a href="alerts.html" class="nav-link">التنبيهات</a></li>
+                    <li><a href="production.html" class="nav-link">الإنتاج المحلي</a></li>
+                    <li><a href="competitive.html" class="nav-link active">تحليل المنافسة</a></li>
+                    <li><a href="strategy.html" class="nav-link">الملخص الاستراتيجي</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <h1 class="fade-in">📈 صحة السوق التنافسية</h1>
+            <p class="hero-subtitle">
+                تحليل ضغط التسعير والهوامش مقارنة بالمنافسين
+            </p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="card">
+            <h2 style="margin-bottom: 1.5rem;">تحليل السوق - الزيت</h2>
+
+            <!-- نظرة عامة على التسعير -->
+            <div class="grid grid-3" style="margin-bottom: 2rem;">
+                <div
+                    style="text-align: center; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">سعر السوق
+                        المحلي</div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-500);">$1,650</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">لكل طن</div>
+                </div>
+
+                <div
+                    style="text-align: center; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">التكلفة الواصلة
+                    </div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-green);">$1,520</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">لكل طن</div>
+                </div>
+
+                <div
+                    style="text-align: center; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">فجوة السعر
+                    </div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-amber);">$130</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">دولار/طن</div>
+                </div>
+            </div>
+
+            <!-- موقع السوق -->
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                <div
+                    style="padding: 1.5rem; background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--accent-green); border-radius: var(--radius-lg);">
+                    <h3 style="margin-bottom: 1rem;">
+                        <i class="fas fa-trophy"></i>
+                        الوضع التنافسي
+                    </h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-green); margin-bottom: 0.5rem;">
+                        ممتاز
+                    </div>
+                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.875rem;">
+                        تسعير أفضل من المنافسين (مؤشر > 105)
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge badge-success">
+                            مؤشر المنافس: 102.5
+                        </span>
+                    </div>
+                </div>
+
+                <div
+                    style="padding: 1.5rem; background: rgba(99, 102, 241, 0.1); border-left: 4px solid var(--primary-500); border-radius: var(--radius-lg);">
+                    <h3 style="margin-bottom: 1rem;">
+                        <i class="fas fa-chart-pie"></i>
+                        ضغط الهوامش
+                    </h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-500); margin-bottom: 0.5rem;">
+                        منخفض
+                    </div>
+                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.875rem;">
+                        هوامش صحية (≥ 15%)
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge badge-primary">
+                            إجمالي الهامش: 7.9%
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- سياق السوق -->
+            <h3 style="margin-bottom: 1rem;">سياق السوق</h3>
+            <div class="grid grid-2" style="margin-bottom: 2rem;">
+                <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div
+                            style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-percent" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">35%</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">حصة السوق</div>
+                        </div>
+                    </div>
+                    <div
+                        style="margin-top: 1rem; height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                        <div style="width: 35%; height: 100%; background: var(--gradient-primary);"></div>
+                    </div>
+                </div>
+
+                <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div
+                            style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-success); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-boxes-stacked" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">45</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">أيام المخزون</div>
+                        </div>
+                    </div>
+                    <div
+                        style="margin-top: 1rem; height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                        <div style="width: 75%; height: 100%; background: var(--gradient-success);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Recommendation -->
+            <div class="alert alert-success">
+                <h4 style="margin-bottom: 0.75rem;">
+                    <i class="fas fa-lightbulb"></i>
+                    توصية التسعير
+                </h4>
+                <p style="margin-bottom: 0.5rem;">
+                    <strong>الإجراء:</strong> الحفاظ على الاستراتيجية
+                </p>
+                <p style="margin-bottom: 0.5rem;">
+                    <strong>السعر المستهدف:</strong> $1,650/طن
+                </p>
+                <p style="margin: 0;">
+                    <strong>الأساس المنطقي:</strong> التسعير الحالي مثالي لظروف السوق. الوضع التنافسي قوي مع هوامش صحية.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 تحليل السوق والتوريد. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/api.js"></script>
+</body>
+
+</html>

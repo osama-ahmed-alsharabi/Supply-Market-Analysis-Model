@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Summary - Supply & Market Analysis</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Supply & Market Analysis</span>
+                </div>
+                <ul class="navbar-nav">
+                    <li><a href="../index.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="forecast.html" class="nav-link">Forecast</a></li>
+                    <li><a href="alerts.html" class="nav-link">Alerts</a></li>
+                    <li><a href="production.html" class="nav-link">Production</a></li>
+                    <li><a href="competitive.html" class="nav-link">Market</a></li>
+                    <li><a href="strategy.html" class="nav-link active">Strategy</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <h1 class="fade-in">🎯 Strategic Summary</h1>
+            <p class="hero-subtitle">
+                Decision-ready insights for Master Model orchestration
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="container">
+        <!-- Strategic Dashboard -->
+        <div class="card slide-up">
+            <div class="flex-between" style="margin-bottom: 2rem;">
+                <h2 style="margin: 0;">Strategic Decision Panel</h2>
+                <button class="btn btn-primary" onclick="generateSummary()">
+                    <i class="fas fa-magic"></i>
+                    Generate Summary
+                </button>
+            </div>
+
+            <!-- Decision Card -->
+            <div id="decisionCard" class="card-glass" style="padding: 2rem; margin-bottom: 2rem; display: none;">
+                <div class="flex-between" style="margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 id="commodityName">Wheat (قمح)</h3>
+                        <p style="color: var(--text-muted); margin: 0;">Strategic Analysis</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 2rem; font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
+                            id="recommendation">
+                            --
+                        </div>
+                        <div style="margin-top: 0.5rem;">
+                            <span class="badge badge-primary" id="confidenceBadge">
+                                <i class="fas fa-chart-simple"></i>
+                                Confidence: --
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Breakdown -->
+                <div class="grid grid-3" style="margin-bottom: 1.5rem;">
+                    <div
+                        style="text-align: center; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-left: 3px solid var(--accent-red); border-radius: var(--radius-md);">
+                        <i class="fas fa-globe"
+                            style="font-size: 1.5rem; color: var(--accent-red); margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-red);" id="globalRisk">--
+                        </div>
+                        <div style="color: var(--text-muted); font-size: 0.875rem;">Global Risk</div>
+                    </div>
+                    <div
+                        style="text-align: center; padding: 1rem; background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--accent-amber); border-radius: var(--radius-md);">
+                        <i class="fas fa-map-marker-alt"
+                            style="font-size: 1.5rem; color: var(--accent-amber); margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-amber);" id="localRisk">--
+                        </div>
+                        <div style="color: var(--text-muted); font-size: 0.875rem;">Local Risk</div>
+                    </div>
+                    <div
+                        style="text-align: center; padding: 1rem; background: rgba(99, 102, 241, 0.1); border-left: 3px solid var(--primary-500); border-radius: var(--radius-md);">
+                        <i class="fas fa-truck"
+                            style="font-size: 1.5rem; color: var(--primary-500); margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-500);" id="logisticRisk">
+                            --</div>
+                        <div style="color: var(--text-muted); font-size: 0.875rem;">Logistic Risk</div>
+                    </div>
+                </div>
+
+                <!-- Dominant Risk Type -->
+                <div class="alert" id="riskAlert" style="margin-bottom: 1.5rem;">
+                    <strong>Dominant Risk Type:</strong> <span id="dominantRisk">--</span>
+                </div>
+
+                <!-- Explanation -->
+                <div
+                    style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-lightbulb"></i>
+                        Analysis
+                    </h4>
+                    <p style="margin: 0; color: var(--text-secondary);" id="explanationText">--</p>
+                </div>
+
+                <!-- Action Items -->
+                <h4 style="font-size: 1rem; margin-bottom: 1rem;">
+                    <i class="fas fa-tasks"></i>
+                    Action Items
+                </h4>
+                <div id="actionItems">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Risk Distribution Chart -->
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div>
+                    <h4 style="margin-bottom: 1rem;">Risk Distribution</h4>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="riskChart"></canvas>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: 1rem;">Decision Metrics</h4>
+                    <div id="metricsContainer">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Supply & Market Analysis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/js/api.js"></script>
+    <script>
+        let riskChart = null;
+
+        async function generateSummary() {
+            try {
+                showLoading('Generating strategic summary...');
+
+                // Sample request data
+                const requestData = {
+                    commodity_id: 'wheat',
+                    api_outputs: {
+                        cost_forecast: {
+                            avg_predicted_cost: 640.0,
+                            trend_direction: 'rising',
+                            main_cost_driver: 'Index_Cost_Shipping'
+                        },
+                        early_warning: {
+                            supply_alert_level: 'Medium',
+                            expected_increase_pct: 12.5
+                        },
+                        local_production: {
+                            production_outlook: 'Medium',
+                            reliability_score: 0.78
+                        },
+                        competitive_health: {
+                            margin_pressure_level: 'Moderate',
+                            competitive_position: 'Neutral'
+                        }
+                    },
+                    business_context: {
+                        current_inventory_days: 25,
+                        budget_available: 500000.0,
+                        urgency_level: 'medium'
+                    }
+                };
+
+                const response = await apiClient.getStrategicSummary(requestData);
+
+                hideLoading();
+                displaySummary(response.data, response.metadata);
+                showAlert('Strategic summary generated successfully!', 'success');
+
+            } catch (error) {
+                hideLoading();
+                console.error('Summary error:', error);
+                showAlert('Failed to generate summary. ' + error.message, 'danger');
+            }
+        }
+
+        function displaySummary(data, metadata) {
+            // Show decision card
+            document.getElementById('decisionCard').style.display = 'block';
+
+            // Update header
+            document.getElementById('commodityName').textContent = getCommodityName(data.commodity_id);
+            document.getElementById('recommendation').textContent = data.recommendation;
+
+            // Update confidence
+            const confidencePercent = (data.confidence_level * 100).toFixed(0);
+            document.getElementById('confidenceBadge').innerHTML = `
+                <i class="fas fa-chart-simple"></i>
+                Confidence: ${confidencePercent}%
+            `;
+
+            // Update risks
+            document.getElementById('globalRisk').textContent = (data.risk_breakdown.global_risk_score * 100).toFixed(0) + '%';
+            document.getElementById('localRisk').textContent = (data.risk_breakdown.local_risk_score * 100).toFixed(0) + '%';
+            document.getElementById('logisticRisk').textContent = (data.risk_breakdown.logistic_risk_score * 100).toFixed(0) + '%';
+
+            // Update dominant risk
+            const riskAlert = document.getElementById('riskAlert');
+            riskAlert.className = 'alert alert-' + (data.dominant_risk_type === 'Global' ? 'danger' : 'warning');
+            document.getElementById('dominantRisk').textContent = data.dominant_risk_type;
+
+            // Update explanation
+            document.getElementById('explanationText').textContent = data.explanation_text;
+
+            // Render action items
+            renderActionItems(data.action_items);
+
+            // Render chart
+            renderRiskChart(data.risk_breakdown);
+
+            // Render metrics
+            renderMetrics(metadata, data);
+        }
+
+        function renderActionItems(items) {
+            const container = document.getElementById('actionItems');
+            container.innerHTML = items.map((item, index) => `
+                <div style="display: flex; gap: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 0.75rem; border-left: 3px solid var(--primary-500);">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700;">
+                        ${item.priority}
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">${item.action}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">
+                            <i class="fas fa-calendar"></i>
+                            Deadline: ${formatDate(item.deadline)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRiskChart(breakdown) {
+            const ctx = document.getElementById('riskChart');
+
+            if (riskChart) {
+                riskChart.destroy();
+            }
+
+            riskChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Global Risk', 'Local Risk', 'Logistic Risk'],
+                    datasets: [{
+                        data: [
+                            (breakdown.global_risk_score * 100).toFixed(0),
+                            (breakdown.local_risk_score * 100).toFixed(0),
+                            (breakdown.logistic_risk_score * 100).toFixed(0)
+                        ],
+                        backgroundColor: ['#ef4444', '#f59e0b', '#6366f1'],
+                        borderColor: '#0f172a',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                color: '#cbd5e1',
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            callbacks: {
+                                label: ctx => ctx.label + ': ' + ctx.parsed + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderMetrics(metadata, data) {
+            const container = document.getElementById('metricsContainer');
+            container.innerHTML = `
+                <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 0.75rem;">
+                    <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.25rem;">Decision Timestamp</div>
+                    <div style="font-weight: 600; color: var(--text-primary);">${new Date(metadata.decision_timestamp).toLocaleString()}</div>
+                </div>
+                <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 0.75rem;">
+                    <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.25rem;">Valid Until</div>
+                    <div style="font-weight: 600; color: var(--text-primary);">${new Date(metadata.valid_until).toLocaleString()}</div>
+                </div>
+                <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                    <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.25rem;">Model Confidence</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="flex: 1; height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden;">
+                            <div style="width: ${metadata.model_confidence * 100}%; height: 100%; background: var(--gradient-success);"></div>
+                        </div>
+                        <span style="font-weight: 600; color: var(--accent-green);">${(metadata.model_confidence * 100).toFixed(0)}%</span>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>
