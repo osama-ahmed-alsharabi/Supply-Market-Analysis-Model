@@ -1,0 +1,184 @@
+{
+  "routes": [
+    {
+      "route_id": "R01",
+      "name": "Hodeidah → Sana'a",
+      "start_city": "Hodeidah",
+      "end_city": "Sana'a",
+      "start_coords": [
+        14.7978,
+        42.9545
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 226,
+      "terrain_type": "mountain",
+      "road_type": "highway",
+      "vulnerability_factor": 0.65
+    },
+    {
+      "route_id": "R02",
+      "name": "Dhamar → Sana'a",
+      "start_city": "Dhamar",
+      "end_city": "Sana'a",
+      "start_coords": [
+        14.5426,
+        44.4050
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 95,
+      "terrain_type": "mountain",
+      "road_type": "highway",
+      "vulnerability_factor": 0.45
+    },
+    {
+      "route_id": "R03",
+      "name": "Ibb → Sana'a",
+      "start_city": "Ibb",
+      "end_city": "Sana'a",
+      "start_coords": [
+        13.9667,
+        44.1667
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 178,
+      "terrain_type": "mixed",
+      "road_type": "highway",
+      "vulnerability_factor": 0.55
+    },
+    {
+      "route_id": "R04",
+      "name": "Amran → Sana'a",
+      "start_city": "Amran",
+      "end_city": "Sana'a",
+      "start_coords": [
+        15.6594,
+        43.9441
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 50,
+      "terrain_type": "valley",
+      "road_type": "highway",
+      "vulnerability_factor": 0.50
+    },
+    {
+      "route_id": "R05",
+      "name": "Saadah → Sana'a",
+      "start_city": "Saadah",
+      "end_city": "Sana'a",
+      "start_coords": [
+        16.9400,
+        43.7636
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 242,
+      "terrain_type": "desert",
+      "road_type": "highway",
+      "vulnerability_factor": 0.80
+    },
+    {
+      "route_id": "R06",
+      "name": "Marib → Sana'a",
+      "start_city": "Marib",
+      "end_city": "Sana'a",
+      "start_coords": [
+        15.4619,
+        45.3225
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 173,
+      "terrain_type": "desert",
+      "road_type": "highway",
+      "vulnerability_factor": 0.85
+    },
+    {
+      "route_id": "R07",
+      "name": "Al-Jawf → Sana'a",
+      "start_city": "Al-Jawf",
+      "end_city": "Sana'a",
+      "start_coords": [
+        16.6169,
+        45.0394
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 200,
+      "terrain_type": "desert",
+      "road_type": "secondary",
+      "vulnerability_factor": 0.75
+    },
+    {
+      "route_id": "R08",
+      "name": "Hajjah → Sana'a",
+      "start_city": "Hajjah",
+      "end_city": "Sana'a",
+      "start_coords": [
+        15.6944,
+        43.6050
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 127,
+      "terrain_type": "mountain",
+      "road_type": "secondary",
+      "vulnerability_factor": 0.70
+    },
+    {
+      "route_id": "R09",
+      "name": "Taiz → Sana'a",
+      "start_city": "Taiz",
+      "end_city": "Sana'a",
+      "start_coords": [
+        13.5794,
+        44.0219
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 256,
+      "terrain_type": "mixed",
+      "road_type": "highway",
+      "vulnerability_factor": 0.60
+    },
+    {
+      "route_id": "R10",
+      "name": "Al-Bayda → Sana'a",
+      "start_city": "Al-Bayda",
+      "end_city": "Sana'a",
+      "start_coords": [
+        14.1656,
+        45.5731
+      ],
+      "end_coords": [
+        15.3694,
+        44.1910
+      ],
+      "length_km": 267,
+      "terrain_type": "mixed",
+      "road_type": "secondary",
+      "vulnerability_factor": 0.72
+    }
+  ]
+}

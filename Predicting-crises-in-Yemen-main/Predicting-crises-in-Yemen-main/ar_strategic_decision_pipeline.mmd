@@ -1,0 +1,96 @@
+graph TD
+    %% Styling Definitions for Clarity
+    classDef data fill:#e6eeff,stroke:#003399,stroke-width:2px,color:#000
+    classDef model fill:#cceeff,stroke:#0077cc,stroke-width:3px,color:#000
+    classDef synthesis fill:#ffddcc,stroke:#ff6600,stroke-width:4px,color:#000
+    classDef recommendation fill:#d4edda,stroke:#155724,stroke-width:4px,color:#000
+    classDef output fill:#fff3cd,stroke:#856404,stroke-width:2px,color:#000
+    classDef final fill:#f8d7da,stroke:#721c24,stroke-width:4px,color:#000
+
+    %% Stage 0: Data Sources
+    subgraph "مصادر البيانات الأساسية"
+        A1(" الداخلية HSA بيانات
+        (مبيعات، مخزون، لوجستيات)"):::data
+        A2("بيانات السوق _~ إن أمكن_
+        (أسعار المنافسين، حجم الاستيراد, الجمارك)"):::data
+        A3("بيانات المخاطر
+        (أمنية، سياسية، طقس)"):::data
+        A4("بيانات عالمية
+        (أسعار السلع، تكاليف الشحن)"):::data
+    end
+
+    %% Stage 1: Foundational Analysis Models
+    subgraph "المرحلة الأولى: نماذج التحليل الأساسية"
+        %% -- FIX WAS APPLIED HERE -- Removed "1.", "2.", "3." from the start of the text
+        B1("نموذج التنبؤ بالطلب
+        (Time-Series / LSTM)"):::model
+        B2("نموذج تقييم المخاطر
+        (Classification / Gradient Boosting)"):::model
+        B3("نموذج تحليل العرض
+        (Regression / NLP)"):::model
+    end
+
+    %% Connections from Data to Stage 1 Models
+    A1 -- "تغذية بيانات المبيعات" --> B1
+    A2 -- "تغذية بيانات السوق" --> B1
+    A3 -- "تغذية بيانات الطقس" --> B1
+    
+    A3 -- "تغذية بيانات الأمن والطرق" --> B2
+
+    A2 -- "تغذية أسعار المنافسين" --> B3
+    A4 -- "تغذية بيانات التوريد العالمية" --> B3
+
+    %% Stage 1 Outputs
+    subgraph "مخرجات التحليل الأولي"
+        O1("توقعات الطلب الكمي"):::output
+        O2("درجات خطورة الطرق والمسارات"):::output
+        O3("إنذارات تقلبات العرض والأسعار"):::output
+    end
+
+    B1 --> O1
+    B2 --> O2
+    B3 --> O3
+    
+    %% Stage 2: Synthesis Model (The Brain)
+    subgraph "المرحلة الثانية: نموذج التوليف الاستراتيجي"
+        C("التحليل والربط بين النتائج 
+        (Bayesian Networks / GNN)"):::synthesis
+    end
+
+    %% Connections from Stage 1 Outputs to Stage 2 Model
+    O1 -- "ربط الطلب" --> C
+    O2 -- "ربط المخاطر" --> C
+    O3 -- "ربط العرض" --> C
+    
+    %% Stage 2 Output
+    subgraph "مخرجات التوليف"
+        O4("ماذا سيحدث؟
+        سيناريوهات أزمة متكاملة ولماذا؟"):::output
+    end
+    
+    C --> O4
+    
+    %% Stage 3: Recommendation Engine
+    subgraph "المرحلة الثالثة: محرك التوصيات والمحاكاة"
+        D("محرك التوصيات والمحاكاة
+        (Optimization Algorithms)"):::recommendation
+    end
+    
+    O4 -- "تحليل السيناريوهات" --> D
+    
+    %% Stage 3 Output
+    subgraph "مخرجات المحرك"
+        O5("خطط عمل مقترحة ومُفاضلة
+        (تكلفة، فائدة، مخاطر)"):::output
+    end
+    
+    D --> O5
+    
+    %% Final Stage: User Interface
+    subgraph "الواجهات النهائية لصناع القرار"
+        E1("لوحة تحكم تفاعلية (Dashboard)"):::final
+        E2("واجهة محادثة ذكية (LLM)"):::final
+    end
+    
+    O5 -- "عرض النتائج والتوصيات" --> E1
+    O5 -- "تغذية الواجهة اللغوية" --> E2
